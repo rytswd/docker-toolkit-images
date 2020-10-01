@@ -1,13 +1,50 @@
 name: Publish Docker image
 on:
+  push:
+    # Publish `main` as Docker `latest` image.
+    branches:
+      - main
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
   release:
     types:
       - published
 
+env:
+  REPO_NAME: rytswd/testrepo
+
 jobs:
+  parse-version:
+    name: Prepare Version Tag
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.parse.outputs.version }}
+      created: ${{ steps.parse.outputs.created }}
+    steps:
+      - name: Parse version information
+        id: parse
+        # Taken mostly from https://github.com/docker/build-push-action/blob/master/UPGRADE.md#tags-with-ref-and-git-labels
+        run: |
+          VERSION=edge
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=$(echo $VERSION | sed -e 's/^v//')
+          elif [[ $GITHUB_REF == refs/heads/* ]]; then
+            VERSION=$(echo ${GITHUB_REF#refs/heads/} | sed -r 's#/+#-#g')
+          elif [[ $GITHUB_REF == refs/pull/* ]]; then
+            VERSION=pr-${{ github.event.number }}
+          fi
+
+          echo ::set-output name=version::${VERSION}
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+
   alpine-docker:
     name: Alpine - Push to Docker
     runs-on: ubuntu-latest
+    needs: prep-version
+    env:
+      REGISTRY: docker.io
 
     steps:
       - name: Check out the repo
@@ -26,11 +63,13 @@ jobs:
           file: ./alpine/Dockerfile
           pull: true
           push: true
-          tags: docker.io/rytswd/testrepo:latest
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}:${{ needs.parse-version.outputs.version }}
 
   alpine-ghcr:
     name: Alpine - Push to GitHub Container Registry
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: ghcr.io
 
     steps:
       - name: Check out the repo
@@ -41,7 +80,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: rytswd
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
       - name: Build and push to GitHub Container Registry
         uses: docker/build-push-action@v2
@@ -50,4 +89,4 @@ jobs:
           file: ./alpine/Dockerfile
           pull: true
           push: true
-          tags: ghcr.io/rytswd/testrepo:latest
+          tags: ${{ env.REGISTRY }}/${{ env.REPO_NAME }}:${{ needs.parse-version.outputs.version }}
