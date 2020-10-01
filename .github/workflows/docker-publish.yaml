@@ -12,9 +12,6 @@ on:
     types:
       - published
 
-env:
-  REPO_NAME: rytswd/testrepo
-
 jobs:
   parse-version:
     name: Prepare Version Tag
@@ -42,9 +39,10 @@ jobs:
   alpine-docker:
     name: Alpine - Push to Docker
     runs-on: ubuntu-latest
-    needs: prep-version
+    needs: parse-version
     env:
       REGISTRY: docker.io
+      REPO_NAME: rytswd/testrepo
 
     steps:
       - name: Check out the repo
@@ -70,6 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REGISTRY: ghcr.io
+      REPO_NAME: rytswd/testrepo
 
     steps:
       - name: Check out the repo
