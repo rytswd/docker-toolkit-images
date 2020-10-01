@@ -7,4 +7,4 @@ RUN apk add --no-cache \
     curl \
     git
 
-ENTRYPOINT ["/usr/bin/sh"]
+ENTRYPOINT ["/bin/bash"]
