@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-# bind-tools contain `dig`, `nslookup`
+# bind-tools contain `dig`, `nslookup`, etc.
 RUN apk add --no-cache \
     bash \
     bind-tools \
