@@ -50,4 +50,4 @@ jobs:
           file: ./alpine/Dockerfile
           pull: true
           push: true
-          tags: testrepo:latest
+          tags: ghcr.io/rytswd/testrepo:latest
