@@ -6,7 +6,7 @@ on:
 
 jobs:
   alpine-docker:
-    name: Alpine - Push Docker image to Docker
+    name: Alpine - Push to Docker
     runs-on: ubuntu-latest
 
     steps:
@@ -26,10 +26,10 @@ jobs:
           file: ./alpine/Dockerfile
           pull: true
           push: true
-          tags: rytswd/testrepo:latest
+          tags: docker.io/rytswd/testrepo:latest
 
   alpine-ghcr:
-    name: Alpine - Push Docker image to GitHub Container Registry
+    name: Alpine - Push to GitHub Container Registry
     runs-on: ubuntu-latest
 
     steps:
