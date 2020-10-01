@@ -50,4 +50,4 @@ jobs:
           file: ./alpine/Dockerfile
           pull: true
           push: true
-          tags: rytswd/testrepo:latest
+          # tags: rytswd/testrepo:latest
