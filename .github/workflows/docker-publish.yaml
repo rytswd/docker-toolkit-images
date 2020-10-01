@@ -4,13 +4,12 @@ on:
     # Publish `main` as Docker `latest` image.
     branches:
       - main
-
     # Publish `v1.2.3` tags as releases.
     tags:
       - v*
-  release:
-    types:
-      - published
+  # release:
+  #   types:
+  #     - published
 
 jobs:
   parse-version:
@@ -42,7 +41,7 @@ jobs:
     needs: parse-version
     env:
       REGISTRY: docker.io
-      REPO_NAME: rytswd/testrepo
+      REPO_NAME: rytswd/toolkit-alpine
 
     steps:
       - name: Check out the repo
@@ -69,7 +68,7 @@ jobs:
     needs: parse-version
     env:
       REGISTRY: ghcr.io
-      REPO_NAME: rytswd/testrepo
+      REPO_NAME: rytswd/toolkit-alpine
 
     steps:
       - name: Check out the repo
