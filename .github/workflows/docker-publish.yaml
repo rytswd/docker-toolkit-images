@@ -66,6 +66,7 @@ jobs:
   alpine-ghcr:
     name: Alpine - Push to GitHub Container Registry
     runs-on: ubuntu-latest
+    needs: parse-version
     env:
       REGISTRY: ghcr.io
       REPO_NAME: rytswd/testrepo
