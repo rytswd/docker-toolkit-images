@@ -7,4 +7,5 @@ RUN apk add --no-cache \
     curl \
     git
 
-CMD ["/bin/sleep", "3650d"]
+ENTRYPOINT ["/bin/bash", "-c"]
+CMD ["echo 'Default command is used, exiting. You may want to override the command to use the toolkit.'"]
