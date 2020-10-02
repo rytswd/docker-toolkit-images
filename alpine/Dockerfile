@@ -7,4 +7,4 @@ RUN apk add --no-cache \
     curl \
     git
 
-CMD ["/bin/bash"]
+CMD ["/bin/sleep", "3650d"]
