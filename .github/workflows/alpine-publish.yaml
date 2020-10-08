@@ -1,4 +1,4 @@
-name: Publish Docker image
+name: Publish Alpine Docker image
 on:
   push:
     # Publish `main` as Docker `latest` image.
@@ -7,6 +7,8 @@ on:
     # Publish `v1.2.3` tags as releases.
     tags:
       - v*
+    paths:
+      - alpine/*
   # release:
   #   types:
   #     - published
