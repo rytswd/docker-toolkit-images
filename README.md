@@ -14,7 +14,7 @@ Included tools are
 Images created from this repo are:
 
 - `rytswd/toolkit-alpine`
-- `rytswd/toolkit-buster` (_To be completed_)
+- `rytswd/toolkit-buster` (_WIP_)
 
 ## Repositories
 
