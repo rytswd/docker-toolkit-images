@@ -1,11 +1,11 @@
 FROM debian:buster
 
 # bind-tools contain `dig`, `nslookup`, etc.
-RUN apt-get update -y &&
+RUN apt-get update -y && \
     apt-get install -y \
         curl \
         git \
-        traceroute &&
+        traceroute && \
     apt-get clean
 
 ENTRYPOINT ["/bin/bash", "-c"]
