@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: toolkit-buster
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: toolkit-buster
+  labels:
+    app.kubernetes.io/name: toolkit-buster
+spec:
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 80
+  selector:
+    app.kubernetes.io/name: toolkit-buster
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: toolkit-buster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: toolkit-buster
+      version: v1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: toolkit-buster
+        version: v1
+    spec:
+      serviceAccountName: toolkit-buster
+      containers:
+        - image: docker.io/rytswd/toolkit-buster:0.1.1
+          name: toolkit-buster
+          command: ["/bin/sleep", "3650d"]
